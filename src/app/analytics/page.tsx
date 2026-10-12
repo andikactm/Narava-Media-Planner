@@ -9,15 +9,15 @@ export const metadata = {
 
 export default function AnalyticsPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <div className="border-b border-slate-800 bg-slate-900/80 px-6 py-3 flex items-center justify-between">
+    <div className="min-h-screen bg-[#fff8fc] text-slate-900 flex flex-col font-sans">
+      <div className="border-b border-pink-100 bg-white/95 px-6 py-3 flex items-center justify-between">
         <Link 
           href="/" 
-          className="text-xs text-slate-400 hover:text-slate-100 flex items-center gap-1.5 transition"
+          className="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1.5 transition"
         >
           <ArrowLeft className="w-4 h-4" /> Kembali ke Media Planner
         </Link>
-        <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+        <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">
           Obsidian UI Analytics Block
         </span>
       </div>
