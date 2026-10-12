@@ -155,7 +155,7 @@ export default function MediaPlannerApp() {
       <header className="border-b border-pink-100 bg-white/95 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30">
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg tracking-tight text-slate-900">Digital Media Planning Dashboard</span>
+            <span className="font-bold text-lg tracking-tight text-slate-900">NARAVA Media Planner</span>
             <span className="text-xs bg-pink-50 text-slate-500 border border-pink-200 px-2 py-0.5 rounded font-mono">
               v1.0 MVP
             </span>
@@ -270,13 +270,13 @@ export default function MediaPlannerApp() {
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-500">Total Isu:</span>
-                <span className={`font-mono font-bold ${validationResult.issues.length === 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                <span className={`font-mono font-bold ${validationResult.issues.length === 0 ? 'text-blue-700' : 'text-amber-700'}`}>
                   {validationResult.issues.length} catatan
                 </span>
               </div>
 
               {validationResult.issues.length === 0 ? (
-                <div className="p-3 bg-emerald-950/40 border border-emerald-800/80 rounded text-xs text-emerald-300 flex items-center gap-2">
+                <div className="p-3 bg-emerald-950/40 border border-emerald-800/80 rounded text-xs text-blue-700 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
                   Semua perhitungan budget dan batas aman valid.
                 </div>
@@ -336,7 +336,7 @@ export default function MediaPlannerApp() {
                   <th className="py-2.5 px-3 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-pink-100">
                 {phases.map((phase) => {
                   const cpaFence = phase.targetCpa ? evaluateCPAFence(phase.targetCpa, breakEvenCPA) : null
                   
