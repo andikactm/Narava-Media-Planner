@@ -72,11 +72,11 @@
   /* Light palette. Text, borders and fills are --ad-ink at different strengths. */
   --ad-ink: 24 24 27;
   --ad-shadow: 0.28;
-  --ad-stage: #f6f6f7;
-  --ad-window: #eeeef0;
+  --ad-stage: #fff5fa;
+  --ad-window: #eef5ff;
   --ad-main: #ffffff;
   --ad-surface: #ffffff;
-  --ad-rail-float: rgb(238 238 240 / 0.97);
+  --ad-rail-float: rgb(255 255 255 / 0.97);
   --ad-composer: rgb(24 24 27 / 0.045);
   --ad-composer-focus: rgb(24 24 27 / 0.065);
   --ad-overlay: rgb(255 255 255 / 0.94);
@@ -91,11 +91,11 @@
   --ring-strong: 0 0 0 1px rgb(var(--ad-ink) / 0.12);
 
   /* Overridden at runtime from Settings → Appearance */
-  --accent: #4c9bff;
+  --accent: #e65b9a;
 
   /* Data colors, darkened enough to read on white */
   --orange: #ea6a1c;
-  --purple: #7c5cf0;
+  --purple: #8abcf9;
   --green: #16a34a;
   --add-fg: #16a34a;
   --add-bg: rgba(22, 163, 74, 0.1);
@@ -103,7 +103,7 @@
   --del-bg: rgba(220, 38, 38, 0.1);
   --merged: #16a34a;
   --review: #d97706;
-  --open: #2563eb;
+  --open: #4c86d9;
   --bad: #dc2626;
   --star: #d99a06;
 
