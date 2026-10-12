@@ -8,7 +8,11 @@ import {
   Plus, 
   Trash2,
   FileSpreadsheet,
-  CheckSquare
+  CheckSquare,
+  Wallet,
+  CalendarDays,
+  TrendingUp,
+  ArrowUpRight
 } from 'lucide-react'
 import { 
   calculateAwarenessBudget, 
@@ -142,6 +146,11 @@ export default function MediaPlannerApp() {
     )
   }
 
+  const allocatedBudget = phases.reduce((sum, phase) => sum + Math.max(0, Number(phase.budget) || 0), 0)
+  const remainingBudget = totalBudget - allocatedBudget
+  const budgetUsage = totalBudget > 0 ? Math.min(100, Math.round((allocatedBudget / totalBudget) * 100)) : 0
+  const formatCurrency = (value: number) => `Rp${Math.abs(value).toLocaleString('id-ID')}`
+
   const filteredChecklist = PREFLIGHT_CHECKLIST.filter((item) => {
     const isDone = completedChecks.includes(item.key)
     if (checklistFilter === 'DONE') return isDone
@@ -198,11 +207,26 @@ export default function MediaPlannerApp() {
 
       {/* Main Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+<section className="relative overflow-hidden rounded-2xl border border-pink-100 bg-white p-5 sm:p-7 shadow-sm">
+<div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-20 h-48 w-48 rounded-full bg-pink-100/70 blur-3xl" />
+<div aria-hidden="true" className="pointer-events-none absolute right-24 -bottom-24 h-48 w-48 rounded-full bg-blue-100/80 blur-3xl" />
+<div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+<div className="max-w-2xl"><span className="inline-flex items-center gap-2 rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-pink-700"><span className="h-1.5 w-1.5 rounded-full bg-pink-500" /> NARAVA · Workspace</span>
+<h1 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Rencanakan campaign dengan lebih terarah.</h1>
+<p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">Atur budget, susun fase distribusi, dan cek kesiapan campaign dalam satu workspace.</p></div>
+<div className="rounded-xl border border-blue-100 bg-blue-50/80 px-4 py-3 sm:min-w-48"><p className="text-xs font-medium text-blue-700">Kesiapan campaign</p><p className="mt-1 text-lg font-bold text-slate-900">{validationResult.canPublish ? "Siap ditinjau" : "Dalam perencanaan"}</p><p className="mt-1 text-xs text-slate-500">{completedChecks.length} dari 15 checklist selesai</p></div>
+</div></section>
+<section aria-label="Ringkasan campaign" className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+<div className="rounded-2xl border border-pink-100 bg-white p-4 shadow-sm"><div className="flex items-center justify-between gap-3"><span className="text-xs font-medium text-slate-500">Total budget</span><span className="rounded-lg bg-pink-50 p-2 text-pink-600"><Wallet className="h-4 w-4" /></span></div><p className="mt-3 break-words text-xl font-bold tracking-tight text-slate-900">{formatCurrency(totalBudget)}</p><p className="mt-1 text-xs text-slate-500">Anggaran campaign</p></div>
+<div className="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm"><div className="flex items-center justify-between gap-3"><span className="text-xs font-medium text-slate-500">Sudah dialokasikan</span><span className="rounded-lg bg-blue-50 p-2 text-blue-600"><TrendingUp className="h-4 w-4" /></span></div><p className="mt-3 break-words text-xl font-bold tracking-tight text-slate-900">{formatCurrency(allocatedBudget)}</p><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-blue-50"><div className="h-full rounded-full bg-blue-400 transition-all" style={{ width: `${budgetUsage}%` }} /></div><p className="mt-1.5 text-xs text-slate-500">{budgetUsage}% dari total budget</p></div>
+<div className="rounded-2xl border border-pink-100 bg-white p-4 shadow-sm"><div className="flex items-center justify-between gap-3"><span className="text-xs font-medium text-slate-500">Sisa anggaran</span><span className="rounded-lg bg-pink-50 p-2 text-pink-600"><ArrowUpRight className="h-4 w-4" /></span></div><p className={`mt-3 break-words text-xl font-bold tracking-tight ${remainingBudget < 0 ? "text-rose-600" : "text-slate-900"}`}>{remainingBudget < 0 ? "-" : ""}{formatCurrency(remainingBudget)}</p><p className="mt-1 text-xs text-slate-500">{remainingBudget < 0 ? "Melebihi budget campaign" : "Belum dialokasikan ke fase"}</p></div>
+<div className="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm"><div className="flex items-center justify-between gap-3"><span className="text-xs font-medium text-slate-500">Jumlah fase</span><span className="rounded-lg bg-blue-50 p-2 text-blue-600"><CalendarDays className="h-4 w-4" /></span></div><p className="mt-3 text-xl font-bold tracking-tight text-slate-900">{phases.length} <span className="text-sm font-medium text-slate-500">fase</span></p><p className="mt-1 text-xs text-slate-500">Distribusi media campaign</p></div>
+</section>
         
         {/* Row 1: Campaign Financials & Break-Even Constraints */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
           
-          <div className="bg-white border border-pink-100 p-4 rounded-lg space-y-3">
+          <div className="bg-white border border-pink-100 p-5 rounded-2xl space-y-4 shadow-sm">
             <h2 className="text-xs uppercase font-bold text-slate-500 tracking-wider flex items-center gap-1.5">
               <Calculator className="w-4 h-4 text-slate-500" /> Parameter Bisnis & Budget
             </h2>
@@ -215,7 +239,7 @@ export default function MediaPlannerApp() {
                   type="number"
                   value={totalBudget}
                   onChange={(e) => setTotalBudget(Number(e.target.value))}
-                  className="w-full bg-[#fff8fc] border border-pink-200 rounded px-2.5 py-1.5 text-sm text-slate-900 focus:outline-none focus:border-pink-400 font-mono"
+                  className="w-full rounded-lg border border-pink-200 bg-[#fff8fc] px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-100 font-mono"
                 />
               </div>
 
@@ -303,7 +327,7 @@ export default function MediaPlannerApp() {
         </section>
 
         {/* Row 2: Media Plan Phase Builder */}
-        <section className="bg-white border border-pink-100 rounded-lg p-5 space-y-4">
+        <section className="bg-white border border-pink-100 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-100 pb-3">
             <div>
               <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
@@ -316,15 +340,15 @@ export default function MediaPlannerApp() {
             </div>
             <button 
               onClick={handleAddPhase}
-              className="text-xs bg-pink-50 hover:bg-pink-100 text-slate-900 border border-pink-200 px-3 py-1.5 rounded transition flex items-center gap-1.5 self-start sm:self-auto"
+              className="text-xs bg-pink-600 hover:bg-pink-700 text-white border border-pink-600 px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
             >
               <Plus className="w-3.5 h-3.5" /> Tambah Fase
             </button>
           </div>
 
           {/* Table Container */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+          <div className="overflow-x-auto rounded-xl border border-pink-100">
+            <table className="w-full min-w-[1050px] text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b border-pink-100 text-slate-500 uppercase tracking-wider text-[11px]">
                   <th className="py-2.5 px-3">Nama Fase</th>
@@ -347,7 +371,7 @@ export default function MediaPlannerApp() {
                           type="text" 
                           value={phase.name} 
                           onChange={(e) => handleUpdatePhase(phase.id, 'name', e.target.value)}
-                          className="bg-transparent border-b border-transparent hover:border-pink-200 focus:border-pink-400 focus:outline-none w-36 text-slate-900"
+                          className="w-36 rounded-md border border-transparent bg-transparent px-2 py-1.5 text-slate-900 outline-none transition hover:border-pink-200 focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
                         />
                       </td>
 
@@ -355,7 +379,7 @@ export default function MediaPlannerApp() {
                         <select 
                           value={phase.objective} 
                           onChange={(e) => handleUpdatePhase(phase.id, 'objective', e.target.value)}
-                          className="bg-[#fff8fc] border border-pink-100 rounded px-2 py-1 text-slate-700 focus:outline-none focus:border-pink-300"
+                          className="rounded-lg border border-pink-100 bg-[#fff8fc] px-2.5 py-2 text-slate-700 outline-none transition focus:border-pink-300 focus:ring-2 focus:ring-pink-100"
                         >
                           <option value="Awareness">Awareness</option>
                           <option value="Traffic">Traffic</option>
@@ -369,14 +393,14 @@ export default function MediaPlannerApp() {
                             type="text"
                             value={phase.channel}
                             onChange={(e) => handleUpdatePhase(phase.id, 'channel', e.target.value)}
-                            className="bg-[#fff8fc] border border-pink-100 rounded px-2 py-1 text-slate-700 w-24 focus:outline-none"
+                            className="w-24 rounded-lg border border-pink-100 bg-[#fff8fc] px-2.5 py-2 text-slate-700 outline-none transition focus:border-pink-300 focus:ring-2 focus:ring-pink-100"
                             placeholder="Channel"
                           />
                           <input 
                             type="text"
                             value={phase.format}
                             onChange={(e) => handleUpdatePhase(phase.id, 'format', e.target.value)}
-                            className="bg-[#fff8fc] border border-pink-100 rounded px-2 py-1 text-slate-700 w-28 focus:outline-none"
+                            className="w-28 rounded-lg border border-pink-100 bg-[#fff8fc] px-2.5 py-2 text-slate-700 outline-none transition focus:border-pink-300 focus:ring-2 focus:ring-pink-100"
                             placeholder="Format"
                           />
                         </div>
@@ -388,7 +412,7 @@ export default function MediaPlannerApp() {
                             type="date"
                             value={phase.startDate}
                             onChange={(e) => handleUpdatePhase(phase.id, 'startDate', e.target.value)}
-                            className="bg-[#fff8fc] border border-pink-100 rounded px-1.5 py-1 text-slate-700 focus:outline-none"
+                            className="rounded-lg border border-pink-100 bg-[#fff8fc] px-2 py-2 text-slate-700 outline-none transition focus:border-pink-300 focus:ring-2 focus:ring-pink-100"
                           />
                           <span className="text-slate-500">-</span>
                           <input 
@@ -497,7 +521,7 @@ export default function MediaPlannerApp() {
                 <div 
                   key={item.key}
                   onClick={() => toggleCheck(item.key)}
-                  className={`p-3 rounded border text-xs cursor-pointer transition select-none flex items-start gap-2.5 ${
+                  className={`p-3.5 rounded-xl border text-xs cursor-pointer transition select-none flex items-start gap-2.5 ${
                     isDone 
                       ? 'bg-[#fff8fc]/70 border-pink-200 text-slate-500' 
                       : 'bg-[#fff8fc]/30 border-pink-100 text-slate-500 hover:border-pink-200'
