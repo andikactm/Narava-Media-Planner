@@ -521,7 +521,11 @@ export default function MediaPlannerApp() {
                 <div 
                   key={item.key}
                   onClick={() => toggleCheck(item.key)}
-                  className={`p-3.5 rounded-xl border text-xs cursor-pointer transition select-none flex items-start gap-2.5 ${
+                  onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggleCheck(item.key) } }}
+                  role="checkbox"
+                  aria-checked={isDone}
+                  tabIndex={0}
+                  className={`p-3.5 rounded-xl border text-xs cursor-pointer transition select-none flex items-start gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${
                     isDone 
                       ? 'bg-[#fff8fc]/70 border-pink-200 text-slate-500' 
                       : 'bg-[#fff8fc]/30 border-pink-100 text-slate-500 hover:border-pink-200'
@@ -530,7 +534,8 @@ export default function MediaPlannerApp() {
                   <input 
                     type="checkbox" 
                     checked={isDone}
-                    onChange={() => {}}
+                    onChange={() => toggleCheck(item.key)}
+                    onClick={(event) => event.stopPropagation()}
                     className="mt-0.5 rounded border-pink-200 text-pink-600 focus:ring-0 cursor-pointer"
                   />
                   <div>
